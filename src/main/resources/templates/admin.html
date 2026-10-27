@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Painel administrativo | Patinhas</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body class="admin-body">
+    <header th:replace="~{fragments :: cabecalho}"></header>
+    <main class="admin-page">
+      <div th:replace="~{fragments :: alertas}"></div>
+      <div class="admin-title-row">
+        <div>
+          <span class="eyebrow">ÁREA DE GESTÃO</span>
+          <h1>Painel administrativo</h1>
+          <p>Gerencie os animais e acompanhe os pedidos de adoção.</p>
+        </div>
+        <a class="btn btn-primary" th:href="@{/admin/animais/novo}"
+          >＋ Cadastrar animal</a
+        >
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-icon peach">🐾</span>
+          <div>
+            <small>Total de animais</small
+            ><strong th:text="${#lists.size(animais)}">6</strong>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon green">🏡</span>
+          <div>
+            <small>Disponíveis</small
+            ><strong th:text="${disponiveis}">6</strong>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon yellow">📨</span>
+          <div>
+            <small>Pedidos pendentes</small
+            ><strong th:text="${pendentes}">0</strong>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon pink">💚</span>
+          <div>
+            <small>Solicitações recebidas</small
+            ><strong th:text="${#lists.size(solicitacoes)}">0</strong>
+          </div>
+        </div>
+      </div>
+      <section class="admin-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Animais cadastrados</h2>
+            <p>Adicione, edite ou remova os perfis.</p>
+          </div>
+          <span
+            class="panel-count"
+            th:text="${#lists.size(animais)} + ' animais'"
+            >6 animais</span
+          >
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Animal</th>
+                <th>Espécie</th>
+                <th>Idade</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="animal : ${animais}">
+                <td>
+                  <div class="table-animal">
+                    <span th:text="${animal.especie == 'Gato' ? '🐱' : '🐶'}"
+                      >🐶</span
+                    ><strong th:text="${animal.nome}">Bella</strong>
+                  </div>
+                </td>
+                <td th:text="${animal.especie}">Cachorro</td>
+                <td
+                  th:text="${animal.idade == 1 ? '1 ano' : animal.idade + ' anos'}"
+                >
+                  2 anos
+                </td>
+                <td>
+                  <span
+                    class="table-status"
+                    th:classappend="${animal.status == 'Disponível'} ? ' available' : ' adopted'"
+                    th:text="${animal.status}"
+                    >Disponível</span
+                  >
+                </td>
+                <td>
+                  <div class="table-actions">
+                    <a
+                      class="action-link"
+                      th:href="@{/admin/animais/{id}/editar(id=${animal.id})}"
+                      >Editar</a
+                    >
+                    <form
+                      th:action="@{/admin/animais/{id}/excluir(id=${animal.id})}"
+                      method="post"
+                      onsubmit="
+                        return confirm(
+                          'Tem certeza que deseja excluir este animal?',
+                        );
+                      "
+                    >
+                      <button class="action-delete" type="submit">
+                        Excluir
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(animais)}">
+                <td colspan="5" class="table-empty">
+                  Nenhum animal cadastrado.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="admin-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Solicitações de adoção</h2>
+            <p>Acompanhe e atualize a situação dos pedidos.</p>
+          </div>
+          <span
+            class="panel-count"
+            th:text="${#lists.size(solicitacoes)} + ' pedidos'"
+            >0 pedidos</span
+          >
+        </div>
+        <div class="requests-list" th:if="${!#lists.isEmpty(solicitacoes)}">
+          <article class="request-card" th:each="s : ${solicitacoes}">
+            <div class="request-avatar">💌</div>
+            <div class="request-main">
+              <div class="request-heading">
+                <h3 th:text="${s.nomePessoa}">Nome</h3>
+                <span
+                  class="table-status"
+                  th:classappend="${s.status == 'Pendente'} ? ' pending' : (${s.status == 'Aprovada'} ? ' available' : (${s.status == 'Recusada'} ? ' adopted' : ''))"
+                  th:text="${s.status}"
+                  >Pendente</span
+                >
+              </div>
+              <p>
+                Interesse em <strong th:text="${s.nomeAnimal}">Bella</strong> ·
+                <span th:text="${s.dataFormatada}">data</span>
+              </p>
+              <p class="request-contact">
+                <span th:text="${s.email}">email</span> ·
+                <span th:text="${s.telefone}">telefone</span>
+              </p>
+              <p
+                class="request-message"
+                th:if="${!#strings.isEmpty(s.mensagem)}"
+                th:text="${s.mensagem}"
+              >
+                Mensagem
+              </p>
+            </div>
+            <form
+              class="status-form"
+              th:action="@{/admin/solicitacoes/{id}/status(id=${s.id})}"
+              method="post"
+            >
+              <label class="sr-only" th:for="'status-' + ${s.id}">Status</label
+              ><select th:id="'status-' + ${s.id}" name="status">
+                <option
+                  th:each="op : ${ {'Pendente','Em análise','Aprovada','Recusada'} }"
+                  th:value="${op}"
+                  th:text="${op}"
+                  th:selected="${op == s.status}"
+                >
+                  Pendente
+                </option></select
+              ><button class="btn btn-small" type="submit">Atualizar</button>
+            </form>
+          </article>
+        </div>
+        <div
+          class="empty-state compact"
+          th:if="${#lists.isEmpty(solicitacoes)}"
+        >
+          <span>📭</span>
+          <h3>Nenhum pedido por enquanto</h3>
+          <p>Quando alguém enviar uma solicitação, ela aparecerá aqui.</p>
+        </div>
+      </section>
+    </main>
+    <footer th:replace="~{fragments :: rodape}"></footer>
+    <script th:src="@{/js/app.js}"></script>
+  </body>
+</html>

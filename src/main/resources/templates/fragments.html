@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <header class="site-header" th:fragment="cabecalho">
+      <a class="brand" th:href="@{/}" aria-label="Patinhas - início">
+        <span class="brand-icon">🐾</span><span>Patinhas</span>
+      </a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Abrir menu"
+        onclick="document.body.classList.toggle('menu-aberto')"
+      >
+        ☰
+      </button>
+      <nav class="nav-links">
+        <a th:href="@{/}">Início</a>
+        <a th:href="@{/#animais}">Animais</a>
+        <a th:href="@{/#ajuda}">Como ajudar</a>
+        <a th:href="@{/#sobre}">Sobre</a>
+        <a class="nav-admin" th:href="@{/admin}">Painel administrativo</a>
+      </nav>
+    </header>
+    <div th:fragment="alertas" class="alerts">
+      <div class="alert success" th:if="${sucesso}" th:text="${sucesso}"></div>
+      <div class="alert error" th:if="${erro}" th:text="${erro}"></div>
+    </div>
+    <footer class="site-footer" th:fragment="rodape">
+      <div class="footer-inner">
+        <div>
+          <a class="brand footer-brand" th:href="@{/}"
+            ><span class="brand-icon">🐾</span><span>Patinhas</span></a
+          >
+          <p>Conectando animais a novos lares cheios de amor.</p>
+        </div>
+        <div>
+          <h3>Navegação</h3>
+          <a th:href="@{/}">Início</a><a th:href="@{/#animais}">Animais</a
+          ><a th:href="@{/admin}">Administração</a>
+        </div>
+        <div>
+          <h3>Entre em contato</h3>
+          <p>✉ contato@patinhas.com</p>
+          <p>☎ (34) 99999-9999</p>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Patinhas — Adoção responsável 🐾</div>
+    </footer>
+  </body>
+</html>

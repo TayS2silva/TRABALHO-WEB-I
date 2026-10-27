@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${tituloFormulario} + ' | Patinhas'">
+      Animal | Patinhas
+    </title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <header th:replace="~{fragments :: cabecalho}"></header>
+    <main class="inner-page admin-form-page">
+      <a class="back-link" th:href="@{/admin}">← Voltar ao painel</a>
+      <section class="main-form admin-edit-form">
+        <span class="eyebrow">GESTÃO DE ANIMAIS</span>
+        <h1 th:text="${tituloFormulario}">Cadastrar animal</h1>
+        <p class="form-subtitle">
+          Preencha as informações para exibir o perfil no site.
+        </p>
+        <form
+          th:action="@{/admin/animais/salvar}"
+          th:object="${animal}"
+          method="post"
+        >
+          <input type="hidden" th:field="*{id}" />
+          <label for="nome">Nome do animal *</label
+          ><input
+            id="nome"
+            type="text"
+            th:field="*{nome}"
+            maxlength="80"
+            required
+            placeholder="Ex.: Bella"
+          />
+          <div class="form-two">
+            <div>
+              <label for="especie">Espécie *</label
+              ><select id="especie" th:field="*{especie}" required>
+                <option value="">Selecione</option>
+                <option value="Cachorro">Cachorro</option>
+                <option value="Gato">Gato</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div>
+              <label for="idade">Idade em anos *</label
+              ><input
+                id="idade"
+                type="number"
+                min="0"
+                max="50"
+                th:field="*{idade}"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-two">
+            <div>
+              <label for="sexo">Sexo</label
+              ><select id="sexo" th:field="*{sexo}">
+                <option value="">Não informado</option>
+                <option value="Fêmea">Fêmea</option>
+                <option value="Macho">Macho</option>
+              </select>
+            </div>
+            <div>
+              <label for="porte">Porte</label
+              ><select id="porte" th:field="*{porte}">
+                <option value="">Não informado</option>
+                <option value="Pequeno">Pequeno</option>
+                <option value="Médio">Médio</option>
+                <option value="Grande">Grande</option>
+              </select>
+            </div>
+          </div>
+          <label for="status">Situação</label
+          ><select id="status" th:field="*{status}">
+            <option value="Disponível">Disponível</option>
+            <option value="Adotado">Adotado</option>
+          </select>
+          <label for="imagemUrl">Endereço da foto (URL ou caminho)</label
+          ><input
+            id="imagemUrl"
+            type="text"
+            th:field="*{imagemUrl}"
+            placeholder="/images/bella.jpg"
+          />
+          <label for="descricao">Descrição</label
+          ><textarea
+            id="descricao"
+            th:field="*{descricao}"
+            rows="4"
+            maxlength="1000"
+            placeholder="Conte um pouco sobre a personalidade do animal"
+          ></textarea>
+          <div class="form-actions">
+            <a class="btn btn-light" th:href="@{/admin}">Cancelar</a
+            ><button class="btn btn-primary" type="submit">
+              Salvar animal
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <footer th:replace="~{fragments :: rodape}"></footer>
+    <script th:src="@{/js/app.js}"></script>
+  </body>
+</html>

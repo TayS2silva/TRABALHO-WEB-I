@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${animal.nome} + ' | Patinhas'">Animal | Patinhas</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+  <body>
+    <header th:replace="~{fragments :: cabecalho}"></header>
+    <main class="inner-page">
+      <div th:replace="~{fragments :: alertas}"></div>
+      <a class="back-link" th:href="@{/#animais}">← Voltar para os animais</a>
+      <section class="detail-card">
+        <div class="detail-photo">
+          <img
+            th:if="${animal.imagemUrl != null and !#strings.isEmpty(animal.imagemUrl)}"
+            th:src="${animal.imagemUrl}"
+            th:alt="'Foto de ' + ${animal.nome}"
+            onerror="
+              this.style.display = 'none';
+              this.nextElementSibling.style.display = 'grid';
+            "
+          />
+          <div
+            class="image-placeholder"
+            th:style="${animal.imagemUrl != null and !#strings.isEmpty(animal.imagemUrl)} ? 'display:none' : ''"
+          >
+            <span th:text="${animal.especie == 'Gato' ? '🐱' : '🐶'}">🐶</span>
+          </div>
+        </div>
+        <div class="detail-copy">
+          <span class="eyebrow">UM AMIGO ESPERANDO POR VOCÊ</span>
+          <h1 th:text="${animal.nome}">Bella</h1>
+          <p class="animal-meta">
+            <span th:text="${animal.especie}">Cachorro</span> •
+            <span
+              th:text="${animal.idade == 1 ? '1 ano' : animal.idade + ' anos'}"
+              >2 anos</span
+            >
+            • <span th:text="${animal.porte}">Médio</span>
+          </p>
+          <span
+            class="status-tag available"
+            th:classappend="${animal.status != 'Disponível'} ? ' adopted'"
+            th:text="${animal.status}"
+            >Disponível</span
+          >
+          <p class="detail-description" th:text="${animal.descricao}">
+            Descrição do animal.
+          </p>
+          <div class="detail-facts">
+            <div>
+              <small>Sexo</small><strong th:text="${animal.sexo}">Fêmea</strong>
+            </div>
+            <div>
+              <small>Porte</small>
+              <strong th:text="${animal.porte}">Médio</strong>
+            </div>
+            <div>
+              <small>Idade</small>
+              <strong
+                th:text="${animal.idade == 1 ? '1 ano' : animal.idade + ' anos'}"
+                >2 anos</strong
+              >
+            </div>
+          </div>
+          <a
+            class="btn btn-primary"
+            th:if="${animal.status == 'Disponível'}"
+            th:href="@{/adotar/{id}(id=${animal.id})}"
+            >Quero solicitar adoção →</a
+          >
+          <p th:unless="${animal.status == 'Disponível'}">
+            Este animal já foi adotado. Obrigado por se importar! 💚
+          </p>
+        </div>
+      </section>
+    </main>
+    <footer th:replace="~{fragments :: rodape}"></footer>
+    <script th:src="@{/js/app.js}"></script>
+  </body>
+</html>

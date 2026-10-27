@@ -1,0 +1,6 @@
+br\com\patinhas\model\SolicitacaoAdocao.class
+br\com\patinhas\controller\AdminController.class
+br\com\patinhas\service\PatinhasService.class
+br\com\patinhas\controller\SiteController.class
+br\com\patinhas\model\Animal.class
+br\com\patinhas\PatinhasApplication.class
