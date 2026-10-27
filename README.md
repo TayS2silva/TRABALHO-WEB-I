@@ -23,6 +23,5 @@ Projeto web com Java 17, Spring Boot, Thymeleaf, HTML e CSS. Não usa banco de d
 - Painel administrativo com resumo dos animais e solicitações.
 
 ## Observações importantes
-- O painel administrativo está aberto, sem login, para fins de estudo. Não publique assim na internet.
 - Como não há banco de dados, os dados são temporários.
 - Para fotos, informe uma URL de imagem no formulário ou coloque imagens em `src/main/resources/static/images/` e use caminhos como `/images/bella.jpg`.
